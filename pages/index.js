@@ -7,7 +7,6 @@ import { supabase } from '../utils/supabaseClient';
 
 const getRandomImageNumber = () => {
   const number = Math.floor(Math.random() * 7) + 1;
-  console.log('number', number);
   return number;
 };
 
@@ -33,6 +32,7 @@ const images = {
 };
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
   const [messiVotes, setMessiVotes] = useState(0);
   const [ronaldoMisses, setRonaldoMisses] = useState(0);
   const [ronaldoVotes, setRonaldoVotes] = useState(0);
@@ -41,17 +41,47 @@ export default function Home() {
   const [hasVoted, setHasVoted] = useState(false);
 
   const getData = async () => {
-    let { data: goatVoats, error } = await supabase
-      .from('goatVoats')
-      .select('messiVotes, ronaldoVotes');
-    console.log('supabase', supabase);
-    console.log('goatVoats', goatVoats);
-    setMessiVotes();
+    try {
+      let { data: goatVotes, error } = await supabase
+        .from('goatVotes')
+        .select('goat');
+      console.log('supabase', supabase);
+      console.log('goatVotes', goatVotes);
+      setMessiVotes(
+        goatVotes.filter((vote) => vote.goat === 'messi')?.length ?? 0
+      );
+      setRonaldoVotes(
+        goatVotes.filter((vote) => vote.goat === 'ronaldo')?.length ?? 0
+      );
+
+      if (error) {
+        console.log('error');
+      }
+      setIsLoading(false);
+    } catch (err) {
+      console.log('err', err);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     getData();
+    console.log('messiVotes', messiVotes);
+    console.log('ronaldoVotes', ronaldoVotes);
   }, []);
+
+  const insertVote = async (name) => {
+    try {
+      const { data, error } = await supabase
+        .from('goatVotes')
+        .insert([{ goat: name }]);
+
+      if (error) return console.log('error', error);
+      console.log('inserted data', data);
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
 
   const getRandomIntInRange = (min, max) =>
     Math.floor(Math.random() * (max - min) + min);
@@ -60,6 +90,7 @@ export default function Home() {
     if (ronaldoMisses > 3) {
       if (hasVoted) return alert('You can only vote once');
       setRonaldoVotes((prev) => prev + 1);
+      insertVote('ronaldo');
       setHasVoted(true);
       setRonaldoMisses(0);
     } else {
@@ -70,6 +101,7 @@ export default function Home() {
   const handleMessiClick = () => {
     if (hasVoted) return alert('You can only vote once');
     setMessiVotes((prev) => prev + 1);
+    insertVote('messi');
     setHasVoted(true);
     if (document) {
       const jsConfetti = new JSConfetti();
@@ -90,7 +122,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Guess who's the goat</title>
+        <title>Guess who&apos;s the goat</title>
         <meta name="description" content="Who is the goat?" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -98,14 +130,14 @@ export default function Home() {
       <main className="flex flex-col md:flex-row">
         <div className="relative w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
           <img
-            src={images.messi[1]}
+            src={images.messi[7]}
             alt="Messi"
             className="w-[300px] h-auto H relative flex items-end"
           />
           <div className="text-[28px]">Messi</div>
-          <div className="text-[32px]">{messiVotes}</div>
+          <div className="text-[32px]">{isLoading ? '...' : messiVotes}</div>
           <button
-            className="bg-[#52a5ee] border-none rounded-md px-4 py-2"
+            className="bg-[#52a5ee] text-white border-none rounded-md px-4 py-2"
             onClick={handleMessiClick}
           >
             Upvote
@@ -122,9 +154,11 @@ export default function Home() {
               className="w-[300px] h-auto relative flex items-end"
             />
             <div className="text-[28px]">Ronaldo</div>
-            <div className="text-[32px]">{ronaldoVotes}</div>
+            <div className="text-[32px]">
+              {isLoading ? '...' : ronaldoVotes}
+            </div>
             <button
-              className="bg-[#52a5ee] border-none rounded-md px-4 py-2"
+              className="bg-[#52a5ee] text-white border-none rounded-md px-4 py-2"
               onClick={handleRonaldoClick}
             >
               Upvote
