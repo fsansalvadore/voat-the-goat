@@ -45,8 +45,6 @@ export default function Home() {
       let { data: goatVotes, error } = await supabase
         .from('goatVotes')
         .select('goat');
-      console.log('supabase', supabase);
-      console.log('goatVotes', goatVotes);
       setMessiVotes(
         goatVotes.filter((vote) => vote.goat === 'messi')?.length ?? 0
       );
@@ -66,8 +64,6 @@ export default function Home() {
 
   useEffect(() => {
     getData();
-    console.log('messiVotes', messiVotes);
-    console.log('ronaldoVotes', ronaldoVotes);
   }, []);
 
   const insertVote = async (name) => {
@@ -87,7 +83,7 @@ export default function Home() {
     Math.floor(Math.random() * (max - min) + min);
 
   const handleRonaldoClick = () => {
-    if (ronaldoMisses > 5) {
+    if (ronaldoMisses > 8) {
       if (hasVoted) return alert('You can only vote once');
       setRonaldoVotes((prev) => prev + 1);
       insertVote('ronaldo');
@@ -128,53 +124,57 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col md:flex-row">
+      <main className="flex flex-col md:flex-row bg-gradient-to-b to-teal-50">
         <h1 className="absolute inset-0 bottom-auto p-10 text-[40px] gap-2 text-teal-800 w-full text-center font-black uppercase">
           <div className="text-7xl">🐐</div>
           Vote the G.O.A.T.
           <div className="text-sm">- unbiased -</div>
         </h1>
         <div className="relative w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
-          <img
-            src={images.messi[7]}
-            alt="Messi"
-            className="w-[300px] h-auto H relative flex items-end"
-          />
-          <div className="text-[28px]">Messi</div>
-          <div className="text-[32px]">{isLoading ? '...' : messiVotes}</div>
-          <button
-            className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
-            onClick={handleMessiClick}
-          >
-            Upvote
-          </button>
+          <div className="bg-white flex flex-col gap-3 text-center justify-center items-center p-8 border border-[#ddd] rounded-xl hover:shadow-lg transition-all">
+            <img
+              src={images.messi[7]}
+              alt="Messi"
+              className="w-[300px] h-auto H relative flex items-end rounded"
+            />
+            <div className="text-[28px]">Messi</div>
+            <div className="text-[32px]">{isLoading ? '...' : messiVotes}</div>
+            <button
+              className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
+              onClick={handleMessiClick}
+            >
+              Upvote
+            </button>
+          </div>
         </div>
         <div className="relative w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
           <motion.div
             className="absolute inset-0 flex flex-col gap-3 text-center justify-center items-center"
             animate={{ left: `${position.x}%`, top: `${position.y}%` }}
           >
-            <img
-              src={images.ronaldo[randomImage]}
-              alt="Ronaldo"
-              className="w-[300px] h-auto relative flex items-end"
-            />
-            <div className="text-[28px]">Ronaldo</div>
-            <div className="text-[32px]">
-              {isLoading ? '...' : ronaldoVotes}
+            <div className="bg-white flex flex-col gap-3 text-center justify-center items-center p-8 border border-[#ddd] rounded-xl hover:shadow-lg transition-all">
+              <img
+                src={images.ronaldo[randomImage]}
+                alt="Ronaldo"
+                className="w-[300px] h-auto relative flex items-end rounded"
+              />
+              <div className="text-[28px]">Ronaldo</div>
+              <div className="text-[32px]">
+                {isLoading ? '...' : ronaldoVotes}
+              </div>
+              <button
+                className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
+                onClick={handleRonaldoClick}
+                onMouseEnter={() => {
+                  if (ronaldoMisses < 4) {
+                    updateOffset();
+                    setRonaldoMisses((prev) => prev + 1);
+                  }
+                }}
+              >
+                Upvote
+              </button>
             </div>
-            <button
-              className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
-              onClick={handleRonaldoClick}
-              onMouseEnter={() => {
-                if (ronaldoMisses < 2) {
-                  updateOffset();
-                  setRonaldoMisses((prev) => prev + 1);
-                }
-              }}
-            >
-              Upvote
-            </button>
           </motion.div>
         </div>
       </main>
