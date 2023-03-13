@@ -140,7 +140,7 @@ export default function Home() {
             <div className="text-[28px]">Messi</div>
             <div className="text-[32px]">{isLoading ? '...' : messiVotes}</div>
             <button
-              className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
+              className="bg-teal-800 font-bold w-full text-white border-none rounded-md px-4 py-3"
               onClick={handleMessiClick}
             >
               Upvote
@@ -163,7 +163,7 @@ export default function Home() {
                 {isLoading ? '...' : ronaldoVotes}
               </div>
               <button
-                className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
+                className="bg-teal-800 font-bold w-full text-white border-none rounded-md px-4 py-3"
                 onClick={handleRonaldoClick}
                 onMouseEnter={() => {
                   if (ronaldoMisses < 4) {
