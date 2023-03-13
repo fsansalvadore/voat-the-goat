@@ -87,7 +87,7 @@ export default function Home() {
     Math.floor(Math.random() * (max - min) + min);
 
   const handleRonaldoClick = () => {
-    if (ronaldoMisses > 3) {
+    if (ronaldoMisses > 5) {
       if (hasVoted) return alert('You can only vote once');
       setRonaldoVotes((prev) => prev + 1);
       insertVote('ronaldo');
@@ -98,6 +98,7 @@ export default function Home() {
     }
     setRonaldoMisses((prev) => prev + 1);
   };
+
   const handleMessiClick = () => {
     if (hasVoted) return alert('You can only vote once');
     setMessiVotes((prev) => prev + 1);
@@ -128,8 +129,9 @@ export default function Home() {
       </Head>
 
       <main className="flex flex-col md:flex-row">
-        <h1 className="absolute inset-0 bottom-auto p-10 text-[40px] text-teal-800 w-full text-center font-black uppercase">
-          Vote the G.O.A.T. 🐐
+        <h1 className="absolute inset-0 bottom-auto p-10 text-[40px] gap-2 text-teal-800 w-full text-center font-black uppercase">
+          <div className="text-7xl">🐐</div>
+          Vote the G.O.A.T.
           <div className="text-sm">- unbiased -</div>
         </h1>
         <div className="relative w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
@@ -164,6 +166,12 @@ export default function Home() {
             <button
               className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
               onClick={handleRonaldoClick}
+              onMouseEnter={() => {
+                if (ronaldoMisses < 2) {
+                  updateOffset();
+                  setRonaldoMisses((prev) => prev + 1);
+                }
+              }}
             >
               Upvote
             </button>
@@ -173,14 +181,3 @@ export default function Home() {
     </div>
   );
 }
-
-// export async function getServerSideProps() {
-//   let { data } = await supabase.from('goatVotes').select();
-
-//   console.log('static props', data);
-//   return {
-//     props: {
-//       votes: data,
-//     },
-//   };
-// }
