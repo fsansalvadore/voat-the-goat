@@ -125,12 +125,12 @@ export default function Home() {
       </Head>
 
       <main className="flex flex-col md:flex-row bg-gradient-to-b to-teal-50">
-        <h1 className="absolute inset-0 bottom-auto p-10 text-[40px] gap-2 text-white w-full text-center font-black uppercase">
+        <h1 className="relative md:absolute inset-0 bottom-auto p-10 text-[40px] gap-2 text-white w-full text-center font-black uppercase">
           <div className="text-7xl">🐐</div>
           Vote the G.O.A.T.
           <div className="text-sm">- unbiased -</div>
         </h1>
-        <div className="relative w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
+        <div className="relative py-10 z-10 w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
           <div className="bg-white flex flex-col gap-3 text-center justify-center items-center p-8 border border-[#ddd] rounded-xl hover:shadow-lg transition-all">
             <img
               src={images.messi[7]}
@@ -147,7 +147,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div className="relative w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
+        <div className="relative mt-[30vh] md:mt-auto w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
           <motion.div
             className="absolute inset-0 flex flex-col gap-3 text-center justify-center items-center"
             animate={{ left: `${position.x}%`, top: `${position.y}%` }}
