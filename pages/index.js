@@ -125,7 +125,7 @@ export default function Home() {
       </Head>
 
       <main className="flex flex-col md:flex-row bg-gradient-to-b to-teal-50">
-        <h1 className="absolute inset-0 bottom-auto p-10 text-[40px] gap-2 text-teal-800 w-full text-center font-black uppercase">
+        <h1 className="absolute inset-0 bottom-auto p-10 text-[40px] gap-2 text-white w-full text-center font-black uppercase">
           <div className="text-7xl">🐐</div>
           Vote the G.O.A.T.
           <div className="text-sm">- unbiased -</div>
@@ -178,6 +178,10 @@ export default function Home() {
           </motion.div>
         </div>
       </main>
+      <div
+        className="fixed -z-10 inset-0 w-screen h-screen bg-center bg-cover"
+        style={{ backgroundImage: `url('/messironaldochess.jpg')` }}
+      />
     </div>
   );
 }
