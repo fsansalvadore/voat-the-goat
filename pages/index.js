@@ -122,12 +122,16 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Guess who&apos;s the goat</title>
+        <title>Vote the goat 🐐</title>
         <meta name="description" content="Who is the goat?" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex flex-col md:flex-row">
+        <h1 className="absolute inset-0 bottom-auto p-10 text-[40px] text-teal-800 w-full text-center font-black uppercase">
+          Vote the G.O.A.T. 🐐
+          <div className="text-sm">- unbiased -</div>
+        </h1>
         <div className="relative w-screen md:w-1/2 h-1/2 md:h-screen flex flex-col gap-3 text-center justify-center items-center">
           <img
             src={images.messi[7]}
@@ -137,7 +141,7 @@ export default function Home() {
           <div className="text-[28px]">Messi</div>
           <div className="text-[32px]">{isLoading ? '...' : messiVotes}</div>
           <button
-            className="bg-[#52a5ee] text-white border-none rounded-md px-4 py-2"
+            className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
             onClick={handleMessiClick}
           >
             Upvote
@@ -158,7 +162,7 @@ export default function Home() {
               {isLoading ? '...' : ronaldoVotes}
             </div>
             <button
-              className="bg-[#52a5ee] text-white border-none rounded-md px-4 py-2"
+              className="bg-teal-800 text-white border-none rounded-md px-4 py-2"
               onClick={handleRonaldoClick}
             >
               Upvote
